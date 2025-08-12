@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Passion_One } from "next/font/google";
 import "./globals.css";
+import Header from "@/components/header";
+import Footer from "@/components/footer";
+
+const passionOne = Passion_One({
+  variable: "--font-passion-one",
+  subsets: ["latin"],
+  weight: "700",
+});
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +33,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${passionOne.variable} antialiased`}
       >
-        {children}
+        <div className="flex flex-col min-h-screen mx-auto">
+          <Header />
+          <div className="flex-1 bg-cover bg-center bg-no-repeat bg-[url('/my-background.png')]">
+            {children}
+          </div>
+          <Footer />
+        </div>
       </body>
     </html>
   );
