@@ -1,1 +1,12 @@
 @import "tailwindcss";
+
+:root {
+  --color-my-black: #C2C2C2;
+}
+
+
+.my-custom-font {
+  font-family: "Passion One";
+  font-weight: 400;
+}
+
