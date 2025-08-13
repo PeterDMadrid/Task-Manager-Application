@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { login } from "@/services/auth";
+import Button from "@/components/button";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -26,7 +27,9 @@ export default function LoginForm() {
 
     try {
       await login(name, password); // call service
-      router.push("/"); // navigate after successful login
+      window.dispatchEvent(new CustomEvent('auth-change'));
+      router.push("/");
+      
     } catch (err: any) {
       setError(err.message || "Something went wrong");
       setLoading(false);
@@ -38,9 +41,7 @@ export default function LoginForm() {
       <input name="name" type="text" placeholder="Username" className="border p-2 w-full mb-2" required />
       <input name="password" type="password" placeholder="Password" className="border p-2 w-full mb-2" required />
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <button type="submit" disabled={loading} className="bg-blue-500 text-white px-4 py-2 rounded">
-        {loading ? "Logging in..." : "Login"}
-      </button>
+      <Button label={loading ? "Logging in..." : "Login"} type="submit" />
     </form>
   );
 }

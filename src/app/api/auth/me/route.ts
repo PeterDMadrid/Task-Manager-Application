@@ -1,31 +1,19 @@
 // app/api/auth/me/route.ts
 import { getCurrentUserFromCookies } from "@/lib/auth";
+import { prisma } from "@/lib/prismaClient";
 
 export async function GET() {
-  try {
-    const user = await getCurrentUserFromCookies();
-    
-    if (!user) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized' }), 
-        { status: 401 }
-      );
-    }
-    
-    return new Response(
-      JSON.stringify({ user }), 
-      { 
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-  } catch (error) {
-    console.error('Error in /me endpoint:', error);
-    return new Response(
-      JSON.stringify({ error: 'Internal server error' }), 
-      { status: 500 }
-    );
+  const currentUser = await getCurrentUserFromCookies();
+
+  if (!currentUser) {
+    return new Response(JSON.stringify(null), { status: 200 });
   }
+
+  // Fetch full user info
+  const user = await prisma.user.findUnique({
+    where: { id: currentUser.userId },
+    select: { id: true, name: true, email: true } // include name
+  });
+
+  return new Response(JSON.stringify(user), { status: 200 });
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Button from "@/components/button";
 
 export default function RegisterForm() {
   const router = useRouter();
@@ -73,13 +74,7 @@ export default function RegisterForm() {
         required
       />
       {error && <p className="text-red-500 text-sm">{error}</p>}
-      <button
-        type="submit"
-        className="bg-green-500 text-white px-4 py-2 rounded"
-        disabled={loading}
-      >
-        {loading ? "Registering..." : "Register"}
-      </button>
+      <Button label={loading ? "Registering..." : "Register"} type="submit" disabled={loading} />
     </form>
   );
 }

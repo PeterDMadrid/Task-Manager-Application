@@ -1,10 +1,25 @@
 import { createTask } from '@/services/taskServices';
+import { getCurrentUserFromCookies } from '@/lib/auth';
+import Button from '@/components/button';
 
-export default function Create() {
+
+export default async function Create() {
+  const user = await getCurrentUserFromCookies();
+
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <h1 className="text-2xl font-bold text-white">Please log in to create tasks</h1>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen">
+    <div className="max-w-md mx-auto mt-10 p-6 border rounded text-white bg-gray-800 shadow-lg">
+      <h2 className="text-2xl font-bold mb-4">
+        Create Task
+      </h2>
       <form action={createTask} className="flex flex-col gap-2 items-center">
-        <div className="flex flex-col mt-24 text-white p-6 shadow-lg shadow-black-500/50 max-w-md mx-auto w-full">
           <input
             className="border p-2 mb-2 w-full"
             type="text"
@@ -50,14 +65,7 @@ export default function Create() {
             <option value="IN_PROGRESS" className="text-white bg-gray-900">In Progress</option>
             <option value="COMPLETED" className="text-white bg-gray-900">Completed</option>
           </select>
-        </div>
-
-        <button
-          type="submit"
-          className="cursor-pointer w-mdtext-lg py-4 px-8 border border-white my-custom-font bg-black hover:bg-white hover:text-black text-white "
-        >
-          CREATE TASK
-        </button>
+        <Button label="CREATE TASK" type="submit" />
       </form>
     </div>
   );
