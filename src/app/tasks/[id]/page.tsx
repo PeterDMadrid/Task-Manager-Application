@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
-import { PrismaClient } from '../../../generated/prisma';
+import { prisma } from "@/lib/prismaClient";
 
 export default async function Page({ params }: { params: { id: string } }) {
-    const prisma = new PrismaClient();
     const id = (await params).id;
     const task = await prisma.task.findUnique({
         where: { id: Number(id) },

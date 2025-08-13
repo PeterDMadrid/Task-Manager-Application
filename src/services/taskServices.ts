@@ -1,14 +1,28 @@
 "use server";
 
-import { PrismaClient } from '../generated/prisma';
-import { $Enums } from '../generated/prisma';
+import { $Enums } from '@prisma/client';
+import { prisma } from "@/lib/prismaClient";
 import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
+import { getCurrentUserFromCookies } from '@/lib/auth';
+
+export async function getUserTasks(userId: number) {
+  return prisma.task.findMany({
+    where: { userId: userId },
+  }); 
+}
 
 export async function createTask(formData: FormData) {
-    const prisma = new PrismaClient();
-
     try {
+
+        const currentUser = await getCurrentUserFromCookies();
+        if(!currentUser) {
+            {
+                redirect('/login'); 
+                return;
+            }
+        }
+
         const title = formData.get('title') as string;
         const description = formData.get('description') as string;
         const dueDate = formData.get('dueDate') as string;
@@ -22,11 +36,11 @@ export async function createTask(formData: FormData) {
                 dueDate: dueDate ? new Date(dueDate) : null,
                 priority,
                 status: status as $Enums.TaskStatus,
+                userId: currentUser.userId,
             },
         });
 
         revalidatePath('/');
-        redirect('/'); // Redirect after successful creation
         
     } catch (error) {
         console.error('Error creating task:', error);
@@ -34,4 +48,6 @@ export async function createTask(formData: FormData) {
     } finally {
         await prisma.$disconnect();
     }
+
+    redirect('/'); 
 }
