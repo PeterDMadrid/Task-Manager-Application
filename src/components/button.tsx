@@ -10,13 +10,19 @@ export default function Button({
   label,
   type = "button",
   onClick,
+  disabled = false,
   className = "",
 }: ButtonProps) {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`cursor-pointer text-lg py-4 px-8 border border-white my-custom-font bg-black hover:bg-white hover:text-black text-white ${className}`}
+      disabled={disabled}
+      className={`cursor-pointer text-lg py-4 px-8 border border-white my-custom-font bg-black hover:bg-white hover:text-black text-white ${
+        disabled 
+          ? 'opacity-50 cursor-not-allowed hover:bg-black hover:text-white' 
+          : ''
+      } ${className}`}
     >
       {label}
     </button>

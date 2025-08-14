@@ -9,8 +9,6 @@ import { getCurrentUserFromCookies } from '@/lib/auth';
 export async function getAllTask(userId: number) {
     try {
         const tasks = await prisma.task.findMany({
-            // Remove this if you want ALL users' tasks, or keep it for just current user's tasks
-            // where: { userId },
             include: {
                 user: {
                     select: {

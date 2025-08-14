@@ -1,4 +1,3 @@
-// components/TaskCard.tsx
 import Link from 'next/link';
 
 interface Task {
@@ -8,6 +7,7 @@ interface Task {
   dueDate: Date | null;
   priority: number | null;
   status: string;
+  userId: number;
   user: {
     name: string;
   };
@@ -15,6 +15,7 @@ interface Task {
 
 interface TaskCardProps {
   task: Task;
+  currentUserId?: number;
 }
 
 export default function TaskCard({ task }: TaskCardProps) {
@@ -48,11 +49,11 @@ export default function TaskCard({ task }: TaskCardProps) {
   };
 
   return (
-    <div className="mx-4 bg-white rounded-lg shadow-md p-6 w-full sm:w-44 md:w-64 lg:w-72 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out">
+    <div className="bg-white rounded-lg shadow-md p-6 w-full sm:w-full md:w-104 lg:w-96 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 ease-in-out">
       {/* Header with title and creator */}
       <div className="flex justify-between items-start mb-3">
-        <Link 
-          href={`/tasks/${task.id}`} 
+        <Link
+          href={`/tasks/${task.id}`}
           className="font-semibold text-lg text-gray-900 hover:text-blue-600 transition-colors duration-200"
         >
           {task.title}
@@ -63,9 +64,9 @@ export default function TaskCard({ task }: TaskCardProps) {
       </div>
 
       {/* Description */}
-      <p className="text-gray-700 text-sm mb-4">
-        {task.description && task.description.length > 60
-          ? `${task.description.slice(0, 60)}...`
+      <p className="text-gray-500/50 text-xs mb-4">
+        {task.description && task.description.length > 5
+          ? `${task.description.slice(0, 5)}...`
           : task.description || "No description"}
       </p>
 
