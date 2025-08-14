@@ -18,9 +18,9 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`cursor-pointer text-lg py-4 px-8 border border-white my-custom-font bg-black hover:bg-white hover:text-black text-white ${
+      className={`cursor-pointer text-lg py-4 px-8 border border-white my-custom-font bg-black hover:bg-white hover:text-black hover:border-black hover:border-4 text-white ${
         disabled 
-          ? 'opacity-50 cursor-not-allowed hover:bg-black hover:text-white' 
+          ? 'opacity-50 cursor-not-allowed' 
           : ''
       } ${className}`}
     >

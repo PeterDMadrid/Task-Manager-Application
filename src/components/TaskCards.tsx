@@ -209,20 +209,8 @@ export default function TaskCard({ task, currentUserId }: TaskCardProps) {
 
           {/* Action buttons */}
           <div className="flex justify-between items-center pt-2">
-            <button
-              onClick={handleCancel}
-              disabled={isPending}
-              className="px-4 py-2 text-gray-600 bg-gray-100 rounded-md hover:bg-gray-200 disabled:opacity-50 transition-colors"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              disabled={isPending}
-              className="px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700 disabled:opacity-50 transition-colors"
-            >
-              {isPending ? 'Saving...' : 'Save'}
-            </button>
+            <Button label="Cancel" onClick={handleCancel} disabled={isPending}/>
+            <Button label={isPending ? 'Saving...' : 'Save'} onClick={handleSave} disabled={isPending}/>
           </div>
         </div>
 
@@ -279,20 +267,8 @@ export default function TaskCard({ task, currentUserId }: TaskCardProps) {
       {/* Edit and Delete buttons - only show if user can modify */}
       {canModify && (
         <div className="flex justify-between items-center">
-          <button
-            onClick={handleEdit}
-            disabled={isPending}
-            className="px-4 py-2 text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 disabled:opacity-50 transition-colors"
-          >
-            Edit
-          </button>
-          <button
-            onClick={handleDelete}
-            disabled={isPending}
-            className="px-4 py-2 text-red-600 bg-red-50 rounded-md hover:bg-red-100 disabled:opacity-50 transition-colors"
-          >
-            Delete
-          </button>
+          <Button label="Edit" onClick={handleEdit} disabled={isPending}/>
+          <Button label="Delete" onClick={handleDelete} disabled={isPending} />
         </div>
       )}
 
