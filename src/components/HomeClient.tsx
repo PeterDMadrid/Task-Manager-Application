@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import TaskCard from '@/components/TaskCards';
 
 interface Task {
@@ -22,17 +22,14 @@ interface HomeClientProps {
 }
 
 export default function HomeClient({ initialTasks, currentUserId }: HomeClientProps) {
-  const [tasks, setTasks] = useState(initialTasks);
-  const [filteredTasks, setFilteredTasks] = useState(initialTasks);
-  
-  // Filter states
-  const [userFilter, setUserFilter] = useState<string>('all'); // 'all' or 'mine'
-  const [priorityFilter, setPriorityFilter] = useState<string>('all'); // 'all', '1', '2', '3'
-  const [statusFilter, setStatusFilter] = useState<string>('all'); // 'all', 'TODO', 'IN_PROGRESS', 'COMPLETED'
+  // Filter states only - no task state needed
+  const [userFilter, setUserFilter] = useState<string>('all');
+  const [priorityFilter, setPriorityFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
 
-  // Apply filters whenever filter states change
-  useEffect(() => {
-    let filtered = [...tasks];
+  // Calculate filtered tasks directly from props
+  const filteredTasks = useMemo(() => {
+    let filtered = [...initialTasks];
 
     // User filter
     if (userFilter === 'mine') {
@@ -49,8 +46,8 @@ export default function HomeClient({ initialTasks, currentUserId }: HomeClientPr
       filtered = filtered.filter(task => task.status === statusFilter);
     }
 
-    setFilteredTasks(filtered);
-  }, [tasks, userFilter, priorityFilter, statusFilter, currentUserId]);
+    return filtered;
+  }, [initialTasks, userFilter, priorityFilter, statusFilter, currentUserId]);
 
   return (
     <div className="min-h-screen text-gray-300 p-6">
@@ -115,7 +112,7 @@ export default function HomeClient({ initialTasks, currentUserId }: HomeClientPr
         
         {/* Results count */}
         <div className="mt-3 text-gray-400 text-sm">
-          Showing {filteredTasks.length} of {tasks.length} tasks
+          Showing {filteredTasks.length} of {initialTasks.length} tasks
         </div>
       </div>
 
@@ -123,7 +120,7 @@ export default function HomeClient({ initialTasks, currentUserId }: HomeClientPr
       {filteredTasks.length === 0 ? (
         <div className="flex items-center justify-center h-64">
           <p className="text-xl text-gray-400">
-            {tasks.length === 0 ? "No tasks found. Create your first task!" : "No tasks match your filters."}
+            {initialTasks.length === 0 ? "No tasks found. Create your first task!" : "No tasks match your filters."}
           </p>
         </div>
       ) : (

@@ -29,18 +29,14 @@ export async function POST(req: Request) {
       );
     }
 
-    // Hash password
     const hashedPassword = await hashPassword(password);
 
-    // Create user
     const user = await prisma.user.create({
       data: { name, email: email || null, password: hashedPassword }, // set email to null if not provided
     });
 
-    // Create JWT token
     const token = createToken(user.id);
 
-    // Send cookie + response
     return createAuthResponse(token, {
       message: "Registration successful",
       user: { id: user.id, name: user.name, email: user.email },

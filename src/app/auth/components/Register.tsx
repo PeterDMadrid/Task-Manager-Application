@@ -38,8 +38,7 @@ export default function RegisterForm() {
         return;
       }
 
-      // Registration successful → redirect to homepage
-      router.push("/");
+      window.location.href = "/";
 
     } catch (err) {
       console.error(err);
